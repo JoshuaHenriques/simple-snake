@@ -16,8 +16,8 @@ namespace Engine
             bool m_replace;
             bool m_remove;
         public:
-            StateMan(){};
-            ~StateMan(){};
+            StateMan();
+            ~StateMan();
 
             // add to stack or replace current stack
             void Add(std::unique_ptr<State> toAdd, bool replace = false);
