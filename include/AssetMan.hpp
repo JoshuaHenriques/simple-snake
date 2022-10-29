@@ -17,10 +17,10 @@ namespace Engine
             AssetMan();
             ~AssetMan();
 
-            void AddTexture(int id, std::string& filePath, bool isRepeated = false);
+            void AddTexture(int id, std::string& filePath, bool wantRepeated = false);
             void AddFont(int id, const std::string &filePath);
 
-            const sf::Texture &GetTexture();
-            const sf::Font &GetFont();
+            const sf::Texture &GetTexture(int id);
+            const sf::Font &GetFont(int id);
     };
 }
