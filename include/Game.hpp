@@ -7,6 +7,12 @@
 #include "AssetMan.hpp"
 #include "StateMan.hpp"
 
+// uniquely identify every font and texture we have
+enum AssetID
+{
+    MAIN_FONT = 0
+};
+
 // holds assetman, stateman, and window
 // pass obj of this struct to each of the states so the state can access 
 // the assets, load new states, and draw on the rendering window
