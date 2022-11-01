@@ -7,8 +7,7 @@
 #include <State.hpp>
 #include <Game.hpp>
 
-class MainMenu : public Engine::State
-{
+class MainMenu : public Engine::State {
     private:
         std::shared_ptr<Context> m_context;
         sf::Text m_gameTitle;

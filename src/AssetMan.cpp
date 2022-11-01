@@ -1,41 +1,30 @@
 #include "AssetMan.hpp"
 
-Engine::AssetMan::AssetMan() 
-{
+Engine::AssetMan::AssetMan() {}
 
-}
+Engine::AssetMan::~AssetMan() {}
 
-Engine::AssetMan::~AssetMan() 
-{
-
-}
-
-void Engine::AssetMan::AddTexture(int id, std::string& filePath, bool wantRepeated)
-{
+void Engine::AssetMan::AddTexture(int id, std::string& filePath, bool wantRepeated) {
     auto texture = std::make_unique<sf::Texture>();
 
-    if(texture->loadFromFile(filePath))
-    {
+    if(texture->loadFromFile(filePath)) {
         texture->setRepeated(wantRepeated);
         m_textures[id] = std::move(texture);
     }
 }
-void Engine::AssetMan::AddFont(int id, const std::string &filePath)
-{
+
+void Engine::AssetMan::AddFont(int id, const std::string &filePath) {
     auto font = std::make_unique<sf::Font>();
 
-    if(font->loadFromFile(filePath))
-    {
+    if(font->loadFromFile(filePath)) {
         m_fonts[id] = std::move(font);
     }
 }
 
-const sf::Texture &Engine::AssetMan::GetTexture(int id)
-{
+const sf::Texture &Engine::AssetMan::GetTexture(int id) {
     return *(m_textures.at(id).get());
 }
 
-const sf::Font &Engine::AssetMan::GetFont(int id)
-{
+const sf::Font &Engine::AssetMan::GetFont(int id) {
     return *(m_fonts.at(id).get());
 }

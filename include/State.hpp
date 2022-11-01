@@ -3,10 +3,8 @@
 
 #include <SFML/System/Time.hpp>
 
-namespace Engine
-{
-    class State
-    {
+namespace Engine {
+    class State {
         public:
             // constructor
             State(){};

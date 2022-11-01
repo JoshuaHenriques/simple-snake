@@ -3,19 +3,15 @@
 #include "Game.hpp"
 #include "MainMenu.hpp"
 
-Game::Game() : m_context(std::make_shared<Context>())
-{
+Game::Game() : m_context(std::make_shared<Context>()) {
     // sf::Style::Close prevents maximizing the window
     m_context->m_window->create(sf::VideoMode(640, 360), "Snake", sf::Style::Close);
     m_context->m_states->Add(std::make_unique<MainMenu>(m_context));
 }
 
-Game::~Game() {
+Game::~Game() {}
 
-}
-
-void Game::Run()
-{
+void Game::Run() {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
@@ -23,8 +19,7 @@ void Game::Run()
     sf::Clock clock;
     sf::Time timeSinceLastFrame = sf::Time::Zero;
 
-    while (m_context->m_window->isOpen())
-    {
+    while (m_context->m_window->isOpen()) {
         // clock.restart() returns the time elapsed from zero
         timeSinceLastFrame += clock.restart();
 

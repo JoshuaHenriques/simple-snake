@@ -4,8 +4,7 @@
 #include <memory>
 #include <State.hpp>
 
-namespace Engine
-{
+namespace Engine {
     class StateMan {
         private:
             // state stack should only be modified at the start of the next update cycle
