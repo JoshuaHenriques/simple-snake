@@ -9,7 +9,11 @@
 
 // uniquely identify every font and texture we have
 enum AssetID {
-    MAIN_FONT = 0
+    MAIN_FONT = 0,
+    GRASS,
+    FOOD,
+    WALL,
+    SNAKE
 };
 
 // holds assetman, stateman, and window

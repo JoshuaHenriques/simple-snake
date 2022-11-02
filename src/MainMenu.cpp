@@ -3,6 +3,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include "MainMenu.hpp"
+#include "GamePlay.hpp"
 
 MainMenu::MainMenu(std::shared_ptr<Context> &context) 
     : m_context(context), m_startBtnSel(true), 
@@ -102,8 +103,7 @@ void MainMenu::Update(sf::Time deltaTime) {
     }
 
     if(m_startBtnPres) {
-        // todo:
-        // go to start state
+        m_context->m_states->Add(std::make_unique<GamePlay>(m_context), true);
     }
     else if(m_exitBtnPres) {
         m_context->m_window->close();

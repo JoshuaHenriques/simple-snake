@@ -4,7 +4,7 @@ Engine::AssetMan::AssetMan() {}
 
 Engine::AssetMan::~AssetMan() {}
 
-void Engine::AssetMan::AddTexture(int id, std::string& filePath, bool wantRepeated) {
+void Engine::AssetMan::AddTexture(int id, const std::string& filePath, bool wantRepeated) {
     auto texture = std::make_unique<sf::Texture>();
 
     if(texture->loadFromFile(filePath)) {
