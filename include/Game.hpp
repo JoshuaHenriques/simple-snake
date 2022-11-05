@@ -13,7 +13,10 @@ enum AssetID {
     GRASS,
     FOOD,
     WALL,
-    SNAKE
+    SNAKE,
+    SNAKEHEADRIGHT,
+    SNAKETAILLEFT,
+    SNAKEBODYHORI,
 };
 
 // holds assetman, stateman, and window
