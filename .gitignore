@@ -28,6 +28,10 @@
 
 # Executables
 bin/
+bin/main
+bin/*.exe
+bin/*.out
+bin/*.app
 *.exe
 *.out
 *.app

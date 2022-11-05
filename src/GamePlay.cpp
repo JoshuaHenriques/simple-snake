@@ -1,10 +1,12 @@
 #include <memory>
+#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
 #include <SFML/Window/Event.hpp>
 
 #include "GamePlay.hpp"
+#include "GameOver.hpp"
 
 GamePlay::GamePlay(std::shared_ptr<Context>& context) : m_context(context), 
 m_snakeDirection({16.f, 0.f}),
@@ -40,6 +42,9 @@ void GamePlay::Init() {
 
     m_food.setTexture(m_context->m_assets->GetTexture(FOOD));
     m_food.setPosition(m_context->m_window->getSize().x / 2, m_context->m_window->getSize().y / 2);
+    
+    // std::cout << "m_food height:" << m_food.getTextureRect().height;
+    // std::cout << "m_food width:" << m_food.getTextureRect().width;
 
     m_snake.Init(m_context->m_assets->GetTexture(SNAKEHEADRIGHT), m_context->m_assets->GetTexture(SNAKEBODYHORI), m_context->m_assets->GetTexture(SNAKETAILLEFT), m_context->m_assets->GetTexture(SNAKE));
 }
@@ -106,12 +111,12 @@ void GamePlay::Update(sf::Time deltaTime) {
 
         for(auto& wall : m_walls) {
             if (m_snake.IsOn(wall)) {
-                // todo:
-                // gameover state
+                m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
             }
         }
         // can use random to move the food
-        // todo: fix snake eating food when not directly on it (visual issue?)
+        // todo: fix snake eating food when not directly on it (visual issue?, food respawn?)
+        // possible solution, make sure x, y are divisible by 16
         if(m_snake.IsOn(m_food)) {
                     m_snake.Grow(m_snakeDirection);
                     int x = 0, y = 0;
@@ -122,7 +127,8 @@ void GamePlay::Update(sf::Time deltaTime) {
                     // use std::clamp() to make sure the food doesn't get spawned in the walls
                     x = std::clamp<int>(rand() % m_context->m_window->getSize().x, 16, rand() % m_context->m_window->getSize().x - 2*16);
                     y = std::clamp<int>(rand() % m_context->m_window->getSize().y, 16, rand() % m_context->m_window->getSize().y - 2*16);
-
+                    std::cout << "m_food x: " << x << std::endl;
+                    std::cout << "m_food y: " << y << std::endl;
                     m_food.setPosition(x, y);
                 }
         else {
