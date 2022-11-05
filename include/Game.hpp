@@ -38,7 +38,7 @@ class Game {
     private:
         // shared_ptr because context will be common for all the states
         std::shared_ptr<Context> m_context;
-        const sf::Time TIME_PER_FRAME = sf::seconds(1.f/144.f);
+        const sf::Time TIME_PER_FRAME = sf::seconds(1.f/60.f);
     public:
         Game();
         ~Game();
