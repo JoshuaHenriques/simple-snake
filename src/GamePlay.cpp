@@ -124,11 +124,16 @@ void GamePlay::Update(sf::Time deltaTime) {
                         // x = rand() % m_context->m_window->getSize().x;
                         // y = rand() % m_context->m_window->getSize().y;
 
-                        // use std::clamp() to make sure the food doesn't get spawned in the walls
-                        x = std::clamp<int>(rand() % m_context->m_window->getSize().x, 16, rand() % m_context->m_window->getSize().x - 2*16);
-                        y = std::clamp<int>(rand() % m_context->m_window->getSize().y, 16, rand() % m_context->m_window->getSize().y - 2*16);
-                        // std::cout << "m_food x: " << x << std::endl;
-                        // std::cout << "m_food y: " << y << std::endl;
+                        do {
+                            // use std::clamp() to make sure the food doesn't get spawned in the walls
+                            // x = std::clamp<int>(rand() % m_context->m_window->getSize().x, 16, rand() % m_context->m_window->getSize().x - 2*16);
+                            // y = std::clamp<int>(rand() % m_context->m_window->getSize().y, 16, rand() % m_context->m_window->getSize().y - 2*16);
+                            x = rand() % m_context->m_window->getSize().x - 2*16;
+                            y = rand() % m_context->m_window->getSize().y - 2*16;
+                        } while ((x % 16 != 0 || y % 16 != 0) || (x < 16 || y < 16));
+
+                        std::cout << "m_food x: " << x << std::endl;
+                        std::cout << "m_food y: " << y << std::endl;
                         m_food.setPosition(x, y);
 
                         m_score += 1;
