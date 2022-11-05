@@ -13,12 +13,9 @@ GameOver::~GameOver() {
 }
 
 void GameOver::Init() {
-    m_context->m_assets->AddFont(MAIN_FONT, "assets/fonts/Roboto-Regular.ttf");
     m_gameOverTitle.setFont(m_context->m_assets->GetFont(MAIN_FONT));
     m_gameOverTitle.setString("Game Over");
-    // sets the origin of the text rectangle from top left to the center
     m_gameOverTitle.setOrigin(m_gameOverTitle.getLocalBounds().width / 2, m_gameOverTitle.getLocalBounds().height / 2);
-    // to center the text
     m_gameOverTitle.setPosition(m_context->m_window->getSize().x / 2, m_context->m_window->getSize().y / 2 - 145.f);
 
     // retry button

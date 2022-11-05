@@ -4,6 +4,7 @@
 #include <array>
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include <Game.hpp>
 #include <State.hpp>
@@ -16,8 +17,10 @@ class GamePlay : public Engine::State {
         sf::Sprite m_grass;
         sf::Sprite m_food;
         std::array<sf::Sprite, 4> m_walls;
-
         Snake m_snake;
+
+        sf::Text m_scoreText;
+        int m_score;
 
         sf::Vector2f m_snakeDirection;
 
