@@ -1,4 +1,5 @@
 #include "Snake.hpp"
+#include <iostream>
 
 Snake::Snake() : m_body(std::list<sf::Sprite>(4)) {
     // m_body.end() gets end of list + 1 so we use --
@@ -76,8 +77,24 @@ void Snake::Move(const sf::Vector2f& direction) {
     if (m_tail == m_body.end()) m_tail = m_body.begin();
 }
 
-bool Snake::IsOn(const sf::Sprite& other) const {
+bool Snake::IsOn(const sf::Sprite &other) const {
     return other.getGlobalBounds().intersects(m_head->getGlobalBounds());
+}
+
+bool Snake::IsIn(const float x, const float y) const {
+    bool flag = false;
+
+    for(auto piece = m_body.begin(); piece != m_body.end(); ++piece) {
+        if (m_head != piece) {
+            flag = piece->getGlobalBounds().intersects({x, y, 16, 16});
+            if(flag) {
+                std::cout << "Flag: " << flag << std::endl;
+                break;
+            }
+        }
+    }
+
+    return flag;
 }
 
 bool Snake::IsSelfIntersecting() const {

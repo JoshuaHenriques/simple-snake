@@ -20,6 +20,7 @@ class Snake : public sf::Drawable {
         void Init(const sf::Texture& head, const sf::Texture& body, const sf::Texture& tail, const sf::Texture& texture);
         void Move(const sf::Vector2f& direction);
         bool IsOn(const sf::Sprite& other) const;
+        bool IsIn(const float x, const float y) const;
         void Grow(const sf::Vector2f& direction);
         bool IsSelfIntersecting() const;
 

@@ -13,7 +13,7 @@ GamePlay::GamePlay(std::shared_ptr<Context>& context) : m_context(context),
 m_snakeDirection({16.f, 0.f}),
 m_elapsedTime(sf::Time::Zero), m_score(0),
 m_isPaused(false) {
-    srand(time(nullptr));
+    
 }
 
 GamePlay::~GamePlay() {}
@@ -130,10 +130,10 @@ void GamePlay::Update(sf::Time deltaTime) {
                             // y = std::clamp<int>(rand() % m_context->m_window->getSize().y, 16, rand() % m_context->m_window->getSize().y - 2*16);
                             x = rand() % m_context->m_window->getSize().x - 2*16;
                             y = rand() % m_context->m_window->getSize().y - 2*16;
-                        } while ((x % 16 != 0 || y % 16 != 0) || (x < 16 || y < 16));
+                        } while ((x % 16 != 0 || y % 16 != 0) || (x < 16 || y < 16) || m_snake.IsIn(x, y));
 
-                        std::cout << "m_food x: " << x << std::endl;
-                        std::cout << "m_food y: " << y << std::endl;
+                        // std::cout << "m_food x: " << x << std::endl;
+                        // std::cout << "m_food y: " << y << std::endl;
                         m_food.setPosition(x, y);
 
                         m_score += 1;
