@@ -80,6 +80,19 @@ bool Snake::IsOn(const sf::Sprite& other) const {
     return other.getGlobalBounds().intersects(m_head->getGlobalBounds());
 }
 
+bool Snake::IsSelfIntersecting() const {
+    bool flag = false;
+
+    for(auto piece = m_body.begin(); piece != m_body.end(); ++piece) {
+        if (m_head != piece) {
+            flag = IsOn(*piece);
+            if(flag) break;
+        }
+    }
+
+    return flag;
+}
+
 void Snake::Grow(const sf::Vector2f& direction) {
     sf::Sprite newPiece;
     newPiece.setTexture(*(m_body.begin()->getTexture()));

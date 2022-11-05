@@ -11,7 +11,8 @@
 
 GamePlay::GamePlay(std::shared_ptr<Context>& context) : m_context(context), 
 m_snakeDirection({16.f, 0.f}),
-m_elapsedTime(sf::Time::Zero), m_score(0) {
+m_elapsedTime(sf::Time::Zero), m_score(0),
+m_isPaused(false) {
     srand(time(nullptr));
 }
 
@@ -104,38 +105,42 @@ void GamePlay::ProcessInput() {
 }
 
 void GamePlay::Update(sf::Time deltaTime) {
-    m_elapsedTime += deltaTime;
-    if(m_elapsedTime.asSeconds() > 0.1) {
+    if (!m_isPaused) {
+        m_elapsedTime += deltaTime;
+        if(m_elapsedTime.asSeconds() > 0.1) {
 
-        for(auto& wall : m_walls) {
-            if (m_snake.IsOn(wall)) {
-                m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
-            }
-        }
-        // can use random to move the food
-        // todo: fix snake eating food when not directly on it (visual issue?, food respawn?)
-        // possible solution, make sure x, y are divisible by 16
-        if(m_snake.IsOn(m_food)) {
-                    m_snake.Grow(m_snakeDirection);
-                    int x = 0, y = 0;
-
-                    // x = rand() % m_context->m_window->getSize().x;
-                    // y = rand() % m_context->m_window->getSize().y;
-
-                    // use std::clamp() to make sure the food doesn't get spawned in the walls
-                    x = std::clamp<int>(rand() % m_context->m_window->getSize().x, 16, rand() % m_context->m_window->getSize().x - 2*16);
-                    y = std::clamp<int>(rand() % m_context->m_window->getSize().y, 16, rand() % m_context->m_window->getSize().y - 2*16);
-                    std::cout << "m_food x: " << x << std::endl;
-                    std::cout << "m_food y: " << y << std::endl;
-                    m_food.setPosition(x, y);
-                    m_score += 1;
-                    m_scoreText.setString("Score: " + std::to_string(m_score));
+            for(auto& wall : m_walls) {
+                if (m_snake.IsOn(wall)) {
+                    m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
                 }
-        else {
-                m_snake.Move(m_snakeDirection);
             }
+            // can use random to move the food
+            // todo: fix snake eating food when not directly on it (visual issue?, food respawn?)
+            // possible solution, make sure x, y are divisible by 16
+            if(m_snake.IsOn(m_food)) {
+                        m_snake.Grow(m_snakeDirection);
+                        int x = 0, y = 0;
 
-        m_elapsedTime = sf::Time::Zero;
+                        // x = rand() % m_context->m_window->getSize().x;
+                        // y = rand() % m_context->m_window->getSize().y;
+
+                        // use std::clamp() to make sure the food doesn't get spawned in the walls
+                        x = std::clamp<int>(rand() % m_context->m_window->getSize().x, 16, rand() % m_context->m_window->getSize().x - 2*16);
+                        y = std::clamp<int>(rand() % m_context->m_window->getSize().y, 16, rand() % m_context->m_window->getSize().y - 2*16);
+                        // std::cout << "m_food x: " << x << std::endl;
+                        // std::cout << "m_food y: " << y << std::endl;
+                        m_food.setPosition(x, y);
+
+                        m_score += 1;
+                        m_scoreText.setString("Score: " + std::to_string(m_score));
+                    }
+            else {
+                    m_snake.Move(m_snakeDirection);
+                }
+
+            if(m_snake.IsSelfIntersecting()) m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
+            m_elapsedTime = sf::Time::Zero;
+        }
     }
 }
 
@@ -153,9 +158,9 @@ void GamePlay::Draw() {
 }
 
 void GamePlay::Pause() {
-
+    m_isPaused = true;
 }
 
 void GamePlay::Start() {
-
+    m_isPaused = false;
 }
