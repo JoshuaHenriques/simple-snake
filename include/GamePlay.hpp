@@ -26,10 +26,9 @@ class GamePlay : public Engine::State {
         int m_score;
 
         sf::Vector2f m_snakeDirection;
-        int m_speed;
+        float m_speed;
         std::deque<sf::Vector2f> m_directionQueue;
 
-        // std::Time timeSinceLastMove;
         sf::Time m_elapsedTime;
         
         bool m_isPaused;

@@ -11,8 +11,8 @@
 class Snake : public sf::Drawable {
     private:
         std::list<sf::Sprite> m_body;
-        std::list<sf::Sprite>::iterator m_head;
-        std::list<sf::Sprite>::iterator m_tail;
+        std::list<sf::Sprite>::reverse_iterator m_head;
+        std::list<sf::Sprite>::reverse_iterator m_tail;
     public:
         Snake();
         ~Snake();

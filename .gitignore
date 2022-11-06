@@ -38,3 +38,4 @@ bin/*.app
 
 # vscode
 /.vscode
+bin/main

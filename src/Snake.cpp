@@ -1,10 +1,11 @@
 #include "Snake.hpp"
+#include "GamePlay.hpp"
 #include <iostream>
 
 Snake::Snake() : m_body(std::list<sf::Sprite>(4)) {
     // m_body.end() gets end of list + 1 so we use --
-    m_head = --m_body.end();
-    m_tail = m_body.begin();
+    m_head = ++m_body.rend();
+    m_tail = m_body.rbegin();
 }
 
 Snake::~Snake() {
@@ -70,11 +71,28 @@ void Snake::Init(const sf::Texture& head, const sf::Texture& body, const sf::Tex
 }
 
 void Snake::Move(const sf::Vector2f& direction) {
-    m_tail->setPosition(m_head->getPosition() + direction);
-    m_head = m_tail;
-    ++m_tail;
+    // std::cout << "direction.x: " << direction.x << " direction.y: " << direction.y << std::endl;
+    sf::Vector2f thisPosition = m_head->getPosition();
+    // std::cout << "thisPosition.x: " << thisPosition.x << " thisPosition.y: " << thisPosition.y << std::endl;
+    sf::Vector2f lastPosition = thisPosition; 
+    // std::cout << "lastPosition.x: " << lastPosition.x << " lastPosition.y: " << lastPosition.y << std::endl;
+    m_head->setPosition(thisPosition + direction);
+    // std::cout << "m_head->getPosition().x: " << m_head->getPosition().x << " m_head->getPosition().y: " << m_head->getPosition().y << std::endl;
+    
+    for(auto piece = m_body.rbegin(); piece != m_body.rend(); ++piece) {
+        if (m_head != piece) {
+            thisPosition = piece->getPosition();
+            // std::cout << "piece->getPosition().x: " << piece->getPosition().x << " piece->getPosition().y: " << piece->getPosition().y << std::endl;
 
-    if (m_tail == m_body.end()) m_tail = m_body.begin();
+            piece->setPosition(lastPosition);
+            lastPosition = thisPosition;
+        }
+    }
+    // m_tail->setPosition(m_head->getPosition() + direction);
+    // m_head = m_tail;
+    // ++m_tail;
+
+    // if (m_tail == m_body.end()) m_tail = m_body.begin();
 }
 
 bool Snake::IsOn(const sf::Sprite &other) const {
@@ -84,7 +102,7 @@ bool Snake::IsOn(const sf::Sprite &other) const {
 bool Snake::IsIn(const float x, const float y) const {
     bool flag = false;
 
-    for(auto piece = m_body.begin(); piece != m_body.end(); ++piece) {
+    for(auto piece = m_body.rbegin(); piece != m_body.rend(); ++piece) {
         if (m_head != piece) {
             flag = piece->getGlobalBounds().intersects({x, y, 16, 16});
             if(flag) {
@@ -100,7 +118,7 @@ bool Snake::IsIn(const float x, const float y) const {
 bool Snake::IsSelfIntersecting() const {
     bool flag = false;
 
-    for(auto piece = m_body.begin(); piece != m_body.end(); ++piece) {
+    for(auto piece = m_body.rbegin(); piece != m_body.rend(); ++piece) {
         if (m_head != piece) {
             flag = IsOn(*piece);
             if(flag) break;
@@ -115,7 +133,8 @@ void Snake::Grow(const sf::Vector2f& direction) {
     newPiece.setTexture(*(m_body.begin()->getTexture()));
     newPiece.setPosition(m_head->getPosition() + direction);
 
-    m_head = m_body.insert(++m_head, newPiece);
+    m_head.base() = m_body.insert(m_head.base(), newPiece);
+    // m_head = m_body.insert(++m_head, newPiece);
 }
 
 void Snake::draw(sf::RenderTarget& target, sf::RenderStates states) const {

@@ -12,7 +12,7 @@
 GamePlay::GamePlay(std::shared_ptr<Context>& context) : m_context(context), 
 m_snakeDirection({16.f, 0.f}),
 m_elapsedTime(sf::Time::Zero), m_score(0),
-m_isPaused(false), m_speed(2) {
+m_isPaused(false), m_speed(1.f) {
     
 }
 
@@ -126,7 +126,7 @@ void GamePlay::ProcessInput() {
 void GamePlay::Update(sf::Time deltaTime) {
     if (!m_isPaused) {
         m_elapsedTime += deltaTime;
-        if(m_elapsedTime.asSeconds() > sf::seconds(0.1/(float) m_speed).asSeconds()) {
+        if(m_elapsedTime.asSeconds() > sf::seconds(.1/(float) m_speed).asSeconds()) {
 
             for(auto& wall : m_walls) {
                 if (m_snake.IsOn(wall)) {
@@ -154,7 +154,7 @@ void GamePlay::Update(sf::Time deltaTime) {
                         // std::cout << "m_food x: " << x << std::endl;
                         // std::cout << "m_food y: " << y << std::endl;
                         m_food.setPosition(x, y);
-
+                        m_speed += 0.1;
                         m_score += 1;
                         m_scoreText.setString("Score: " + std::to_string(m_score));
                     }
