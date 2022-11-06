@@ -130,10 +130,11 @@ bool Snake::IsSelfIntersecting() const {
 
 void Snake::Grow(const sf::Vector2f& direction) {
     sf::Sprite newPiece;
-    newPiece.setTexture(*(m_body.begin()->getTexture()));
-    newPiece.setPosition(m_head->getPosition() + direction);
-
-    m_head.base() = m_body.insert(m_head.base(), newPiece);
+    newPiece.setTexture(*(std::next(m_body.begin())->getTexture()));
+    newPiece.setPosition(m_head->getPosition());
+    // right before the head
+    m_head->setPosition(m_head->getPosition() + direction);
+    m_head.base() = m_body.insert(--m_head.base(), newPiece);
     // m_head = m_body.insert(++m_head, newPiece);
 }
 
