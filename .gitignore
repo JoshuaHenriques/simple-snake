@@ -39,3 +39,4 @@ bin/*.app
 # vscode
 /.vscode
 bin/main
+todo.md
