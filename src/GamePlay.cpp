@@ -12,7 +12,7 @@
 GamePlay::GamePlay(std::shared_ptr<Context>& context) : m_context(context), 
 m_snakeDirection({16.f, 0.f}),
 m_elapsedTime(sf::Time::Zero), m_score(0),
-m_isPaused(false) {
+m_isPaused(false), m_speed(2) {
     
 }
 
@@ -55,6 +55,17 @@ void GamePlay::Init() {
     m_snake.Init(m_context->m_assets->GetTexture(SNAKEHEADRIGHT), m_context->m_assets->GetTexture(SNAKEBODYHORI), m_context->m_assets->GetTexture(SNAKETAILLEFT), m_context->m_assets->GetTexture(SNAKE));
 }
 
+void GamePlay::addDirection(sf::Vector2f newDirection) {
+    if (m_directionQueue.empty()) {
+        m_directionQueue.emplace_back(newDirection);
+    }
+    else {
+        if (m_directionQueue.back() != newDirection) {
+            m_directionQueue.emplace_back(newDirection);
+        }
+    }
+}
+
 void GamePlay::ProcessInput() {
     sf::Event event;
     while (m_context->m_window->pollEvent(event)) {
@@ -65,28 +76,36 @@ void GamePlay::ProcessInput() {
             sf::Vector2f newDirection = m_snakeDirection;
             switch (event.key.code) {
                 case sf::Keyboard::Up:
-                    newDirection = {0.f, -16.f};
+                    // newDirection = {0.f, -16.f};
+                    addDirection({0.f, -16.f});
                     break;
                 case sf::Keyboard::W:
-                    newDirection = {0.f, -16.f};
+                    // newDirection = {0.f, -16.f};
+                    addDirection({0.f, -16.f});
                     break;
                 case sf::Keyboard::Down:
-                    newDirection = {0.f, 16.f};
+                    // newDirection = {0.f, 16.f};
+                    addDirection({0.f, 16.f});
                     break;
                 case sf::Keyboard::S:
-                    newDirection = {0.f, 16.f};
+                    // newDirection = {0.f, 16.f};
+                    addDirection({0.f, 16.f});
                     break;
                 case sf::Keyboard::Left:
-                    newDirection = {-16.f, 0.f};
+                    // newDirection = {-16.f, 0.f};
+                    addDirection({-16.f, 0.f});
                     break;
                 case sf::Keyboard::A:
-                    newDirection = {-16.f, 0.f};
+                    // newDirection = {-16.f, 0.f};
+                    addDirection({-16.f, 0.f});
                     break;
                 case sf::Keyboard::Right:
-                    newDirection = {16.f, 0.f};
+                    // newDirection = {16.f, 0.f};
+                    addDirection({16.f, 0.f});
                     break;
                 case sf::Keyboard::D:
-                    newDirection = {16.f, 0.f};
+                    // newDirection = {16.f, 0.f};
+                    addDirection({16.f, 0.f});
                     break;
                 case sf::Keyboard::Escape:
                     m_context->m_states->Add(std::make_unique<PauseGame>(m_context));
@@ -95,10 +114,10 @@ void GamePlay::ProcessInput() {
                     break;
             }
 
-            if (std::abs(m_snakeDirection.x) != std::abs(newDirection.x) || 
-            std::abs(m_snakeDirection.y) != std::abs(newDirection.y)) {
-                m_snakeDirection = newDirection;
-            }
+            // if (std::abs(m_snakeDirection.x) != std::abs(newDirection.x) || 
+            // std::abs(m_snakeDirection.y) != std::abs(newDirection.y)) {
+            //     m_snakeDirection = newDirection;
+            // }
 
         }
     }
@@ -107,7 +126,7 @@ void GamePlay::ProcessInput() {
 void GamePlay::Update(sf::Time deltaTime) {
     if (!m_isPaused) {
         m_elapsedTime += deltaTime;
-        if(m_elapsedTime.asSeconds() > 0.1) {
+        if(m_elapsedTime.asSeconds() > sf::seconds(0.1/(float) m_speed).asSeconds()) {
 
             for(auto& wall : m_walls) {
                 if (m_snake.IsOn(wall)) {
@@ -140,6 +159,29 @@ void GamePlay::Update(sf::Time deltaTime) {
                         m_scoreText.setString("Score: " + std::to_string(m_score));
                     }
             else {
+                    if (!m_directionQueue.empty()) {
+                        // up
+                        if (m_snakeDirection == (sf::Vector2f) {0.f, -16.f} && 
+                            m_directionQueue.front() != (sf::Vector2f) {0.f, 16.f}) {
+                            m_snakeDirection = m_directionQueue.front();
+                        }
+                        // down
+                        else if (m_snakeDirection == (sf::Vector2f) {0.f, 16.f} && 
+                            m_directionQueue.front() != (sf::Vector2f) {0.f, -16.f}) {
+                            m_snakeDirection = m_directionQueue.front();
+                        }
+                        // left
+                        else if (m_snakeDirection == (sf::Vector2f) {-16.f, 0.f} && 
+                            m_directionQueue.front() != (sf::Vector2f) {16.f, 0.f}) {
+                            m_snakeDirection = m_directionQueue.front();
+                        }
+                        // right
+                        else if (m_snakeDirection == (sf::Vector2f) {16.f, 0.f} && 
+                            m_directionQueue.front() != (sf::Vector2f) {-16.f, 0.f}) {
+                            m_snakeDirection = m_directionQueue.front();
+                        }
+                        m_directionQueue.pop_front();
+                    }
                     m_snake.Move(m_snakeDirection);
                 }
 

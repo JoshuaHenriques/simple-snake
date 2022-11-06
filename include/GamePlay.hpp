@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <array>
+#include <deque>
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -9,6 +10,8 @@
 #include <Game.hpp>
 #include <State.hpp>
 #include <Snake.hpp>
+
+
 
 class GamePlay : public Engine::State {
     private:
@@ -23,6 +26,10 @@ class GamePlay : public Engine::State {
         int m_score;
 
         sf::Vector2f m_snakeDirection;
+        int m_speed;
+        std::deque<sf::Vector2f> m_directionQueue;
+
+        // std::Time timeSinceLastMove;
         sf::Time m_elapsedTime;
         
         bool m_isPaused;
@@ -33,6 +40,7 @@ class GamePlay : public Engine::State {
 
         void Init() override;
         void ProcessInput() override;
+        void addDirection(sf::Vector2f newDirection);
         void Update(sf::Time deltaTime) override;
         void Draw() override;
         void Pause() override;
